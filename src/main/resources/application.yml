@@ -1,0 +1,21 @@
+server:
+  servlet:
+    context-path: /cont-gas
+  port: ${SERVE_PORT:5000}
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    url: ${MYSQL_URL}
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        #format_sql: true
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}

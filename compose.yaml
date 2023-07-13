@@ -1,0 +1,14 @@
+services:
+  mysql:
+    image: 'mysql:latest'
+    environment:
+      - 'MYSQL_DATABASE=cgastos'
+      - 'MYSQL_PASSWORD=qwe123'
+      - 'MYSQL_ROOT_PASSWORD=qwe123'
+      - 'MYSQL_USER=admin'
+    ports:
+      - '3306:3306'
+  redis:
+    image: 'redis:latest'
+    ports:
+      - '6379:6379'
