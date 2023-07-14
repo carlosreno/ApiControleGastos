@@ -27,7 +27,6 @@ public class CustomerTypeServiceImpl implements CustomerTypeService {
         return customerTypeRepository.save(customerType);
     }
 
-
     @Override
     public MessageDto delete(Long id) {
         CustomerType customerType = verifyIfExistCustomerType(id);

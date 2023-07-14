@@ -1,0 +1,1 @@
+ALTER TABLE address ADD uf INT NOT NULL;
