@@ -6,8 +6,8 @@ CREATE TABLE IF NOT EXISTS customer(
                                        customer_type_id INT NOT NULL
 );
 CREATE TABLE IF NOT EXISTS customer_type(
-                                        customer_type INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                                        name VARCHAR(200) NOT NULL
+                                        customer_type_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                                        name VARCHAR(200) NOT NULL UNIQUE
 );
 
 
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS cost(
 );
 ALTER TABLE customer ADD CONSTRAINT fk_customer_type_id
     FOREIGN KEY (customer_type_id)
-        REFERENCES customer_type(customer_type);
+        REFERENCES customer_type(customer_type_id);
 
 ALTER TABLE address ADD CONSTRAINT fk_customer_id
     FOREIGN KEY (customer_id)

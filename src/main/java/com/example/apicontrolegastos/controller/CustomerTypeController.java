@@ -20,6 +20,10 @@ public class CustomerTypeController {
     public ResponseEntity<CustomerType> create(@RequestBody CustomerTypeDto dto){
         return ResponseEntity.status(HttpStatus.CREATED).body(customerTypeService.create(dto));
     }
+    @PutMapping("/update/{id}")
+    public ResponseEntity<CustomerType> put(@PathVariable Long id,@RequestBody CustomerTypeDto dto){
+        return ResponseEntity.status(HttpStatus.OK).body(customerTypeService.update(id,dto));
+    }
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<MessageDto> delete(@PathVariable Long id){
         return ResponseEntity.status(HttpStatus.CREATED).body(customerTypeService.delete(id));
@@ -27,6 +31,10 @@ public class CustomerTypeController {
     @GetMapping("/list-all")
     public ResponseEntity<List<CustomerType>> findAll(){
         return ResponseEntity.status(HttpStatus.CREATED).body(customerTypeService.findAll());
+    }
+    @GetMapping("/findById/{id}")
+    public ResponseEntity<CustomerType> findAll(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.CREATED).body(customerTypeService.findById(id));
     }
 
 }

@@ -2,13 +2,12 @@ server:
   servlet:
     context-path: /cont-gas
   port: ${SERVE_PORT:5000}
-
 spring:
   main:
     allow-bean-definition-overriding: true
   datasource:
-    url: ${MYSQL_URL}
-    username: ${MYSQL_USERNAME:jdbc:mysql://localhost:3306/cgastos}
+    url: ${MYSQL_URL:jdbc:mysql://localhost:3306/cgastos}
+    username: ${MYSQL_USERNAME:admin}
     password: ${MYSQL_PASSWORD:qwe123}
   jpa:
     properties:

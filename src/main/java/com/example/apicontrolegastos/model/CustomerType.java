@@ -7,14 +7,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "customer_type")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Table(name = "customer_type")
 public class CustomerType {
+
     @Id
-    @Column(name = "customer_type")
+    @Column(name = "customer_type_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long typeId;
     private String name;
 }

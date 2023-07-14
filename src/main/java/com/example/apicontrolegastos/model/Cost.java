@@ -18,6 +18,7 @@ import java.util.Date;
 @Builder
 public class Cost {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cost_id;
     private String name;
     private BigDecimal value;
