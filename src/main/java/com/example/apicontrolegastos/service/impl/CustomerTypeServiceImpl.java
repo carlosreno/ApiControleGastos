@@ -7,9 +7,13 @@ import com.example.apicontrolegastos.mapper.CustomerTypeMapper;
 import com.example.apicontrolegastos.model.CustomerType;
 import com.example.apicontrolegastos.repositories.CustomerTypeRepository;
 import com.example.apicontrolegastos.service.CustomerTypeService;
+import com.example.apicontrolegastos.utils.MsgStandard;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+@Service
 @RequiredArgsConstructor
 public class CustomerTypeServiceImpl implements CustomerTypeService {
     private final CustomerTypeRepository customerTypeRepository;
@@ -22,7 +26,22 @@ public class CustomerTypeServiceImpl implements CustomerTypeService {
 
     @Override
     public MessageDto delete(Long id) {
+        verifyIfExistCustomerType(id);
+        return MsgStandard.msgStandardOk("deletado");
+    }
+
+    @Override
+    public List<CustomerType> findAll() {
+        return customerTypeRepository.findAll();
+    }
+
+    private void verifyIfExistCustomerType(Long id) {
         var optCustomerType = customerTypeRepository.findById(id);
-        return null;
+        optCustomerType.ifPresentOrElse(
+                customerTypeRepository::delete,
+                ()-> {
+                throw new NotFoundException("id não existe");
+                }
+        );
     }
 }

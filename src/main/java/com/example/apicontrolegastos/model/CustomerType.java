@@ -1,8 +1,6 @@
 package com.example.apicontrolegastos.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CustomerType {
     @Id
-    private Long customer_type;
+    @Column(name = "customer_type")
+    private Long typeId;
     private String name;
 }

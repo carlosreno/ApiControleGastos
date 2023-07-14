@@ -1,6 +1,5 @@
 package com.example.apicontrolegastos.repositories;
 
-import com.example.apicontrolegastos.model.Customer;
 import com.example.apicontrolegastos.model.CustomerType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
