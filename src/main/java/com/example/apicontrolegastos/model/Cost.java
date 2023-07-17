@@ -1,5 +1,6 @@
 package com.example.apicontrolegastos.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 @Data
@@ -19,12 +19,14 @@ import java.util.Date;
 public class Cost {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long cost_id;
+    private Long costId;
     private String name;
     private BigDecimal value;
-    private LocalDate initial_time;
-    private LocalDate final_time;
+    private LocalDate initialDate;
+    private LocalDate finalDate;
+    @JsonIgnore
     @ManyToOne
+    @JoinColumn(name = "customer_id")
     private Customer customer;
 
 }

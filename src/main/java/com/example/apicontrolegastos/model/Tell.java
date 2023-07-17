@@ -11,22 +11,20 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "address")
 @Builder
-public class Address {
+@Table(name = "tell")
+public class Tell {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "address_id")
-    private Long addressId;
-    private String cep;
-    private String uf;
-    private String rua;
-    private String bairro;
-    private String cidade;
-    private Long numero;
-
+    @Column(name = "tell_id")
+    private Long tellId;
+    private Long countryCode;
+    private Long number;
+    private Long ddd;
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "customer_id")
     private Customer customer;
+
 }
+

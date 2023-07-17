@@ -59,7 +59,7 @@ public class CustomerTypeServiceImpl implements CustomerTypeService {
                 customerType1 ->
                 BeanUtils.copyProperties(customerType1, customerType),
                 () -> {
-                    throw new NotFoundException("id not exist");
+                    throw new NotFoundException("CustomerType with this id not exist");
                 }
         );
         return customerType;

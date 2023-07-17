@@ -1,17 +1,15 @@
 package com.example.apicontrolegastos.service;
 
-import com.example.apicontrolegastos.dto.CustomerTypeDto;
 import com.example.apicontrolegastos.dto.MessageDto;
-import com.example.apicontrolegastos.model.CustomerType;
+import com.example.apicontrolegastos.model.Address;
 
 import java.util.List;
 
 public interface AddressService {
-    CustomerType create(CustomerTypeDto customerTypeDto);
+    Address create(Address address);
     MessageDto delete(Long id);
-    List<CustomerType> findAll();
-
-    CustomerType findById(Long id);
-
-    CustomerType update(Long id, CustomerTypeDto dto);
+    List<Address> findAll();
+    Address findById(Long id);
+    Address update(Long id, Address address);
+    Address patch(Long id, Address address);
 }
