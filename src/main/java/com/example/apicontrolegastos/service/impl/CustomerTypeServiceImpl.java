@@ -45,24 +45,18 @@ public class CustomerTypeServiceImpl implements CustomerTypeService {
 
     @Override
     public CustomerType update(Long id, CustomerTypeDto dto) {
-        verifyIfExistCustomerTypeWithName(dto.name());
         CustomerType customerTypeBd = verifyIfExistCustomerType(id);
+        if (!dto.name().equalsIgnoreCase(customerTypeBd.getName())){
+            verifyIfExistCustomerTypeWithName(dto.name());
+        }
         BeanUtils.copyProperties(dto,customerTypeBd);
         return customerTypeRepository.save(customerTypeBd);
     }
 
 
     private CustomerType verifyIfExistCustomerType(Long id) {
-        var optCustomerType = customerTypeRepository.findById(id);
-        CustomerType customerType = new CustomerType();
-        optCustomerType.ifPresentOrElse(
-                customerType1 ->
-                BeanUtils.copyProperties(customerType1, customerType),
-                () -> {
-                    throw new NotFoundException("CustomerType with this id not exist");
-                }
-        );
-        return customerType;
+        return customerTypeRepository.findById(id)
+                .orElseThrow(()->new NotFoundException("customerType with this id not exist"));
     }
     private void verifyIfExistCustomerTypeWithName(String customerTypeName) {
         var customerTypeBd = customerTypeRepository.findCustomerTypeByName(customerTypeName);

@@ -10,6 +10,6 @@ public interface AddressService {
     MessageDto delete(Long id);
     List<Address> findAll();
     Address findById(Long id);
-    Address update(Long id, Address address);
-    Address patch(Long id, Address address);
+    Address update(Address address);
+    Address patch(Address address);
 }

@@ -31,8 +31,9 @@ public class TellServiceImpl implements TellService {
     }
 
     @Override
-    public MessageDto delete(List<Long> tellsIds) {
-        tellRepository.deleteAllById(tellsIds);
+    public MessageDto delete(Long id) {
+        Tell tell = verifyIfExistTellWithId(id);
+        tellRepository.deleteById(tell.getTellId());
         return MsgStandard.msgStandardOk("deleted");
     }
 
@@ -48,13 +49,29 @@ public class TellServiceImpl implements TellService {
 
     @Override
     public List<Tell> update(List<Tell> tells) {
-        verifyIfExistTellWithId(id);
-        return null;
+        List<Tell> newListTell = tells.stream()
+                .map(tell -> {
+                    var tellBd = verifyIfExistTellWithId(tell.getTellId());
+                    BeanUtils.copyProperties(tell,tellBd);
+                    return  tellBd;
+                }).toList();
+        return tellRepository.saveAll(newListTell);
     }
 
     @Override
     public List<Tell> patch(List<Tell> tells) {
-        return null;
+        List<Tell> newListTell = tells.stream()
+                .map(tell -> {
+                    var tellDb = verifyIfExistTellWithId(tell.getTellId());
+                    return Tell.builder()
+                            .tellId(tellDb.getTellId())
+                            .countryCode(tell.getCountryCode() != null ? tell.getCountryCode() : tellDb.getCountryCode())
+                            .ddd(tell.getDdd() != null ? tell.getDdd() : tellDb.getDdd())
+                            .number(tell.getNumber() != null ? tell.getNumber() : tellDb.getNumber())
+                            .customer(tellDb.getCustomer())
+                            .build();
+                }).toList();
+        return tellRepository.saveAll(newListTell);
     }
     private Tell verifyIfExistTellWithId(Long id){
         return tellRepository.findById(id)

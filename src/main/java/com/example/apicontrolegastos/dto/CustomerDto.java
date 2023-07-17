@@ -13,7 +13,7 @@ import java.util.List;
 
 @Builder
 public record CustomerDto(
-        @NotBlank(message = "NotBlank")
+        @NotBlank
         String name,
         @CPF
         String cpf,
@@ -21,8 +21,6 @@ public record CustomerDto(
         String email,
         @Size(min = 1,max = 3)
         String age,
-        List<Address> addresses,
-        List<Tell> tells,
         @NotNull
         Long customerType
 ) {

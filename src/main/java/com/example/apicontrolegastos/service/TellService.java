@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface TellService {
     List<Tell> create(List<TellDto> tells);
-    MessageDto delete(List<Long> tellsIds);
+    MessageDto delete(Long id);
     List<Tell> findAll();
     Tell findById(Long id);
     List<Tell>  update(List<Tell> tells);

@@ -4,6 +4,7 @@ import com.example.apicontrolegastos.dto.CustomerTypeDto;
 import com.example.apicontrolegastos.dto.MessageDto;
 import com.example.apicontrolegastos.model.CustomerType;
 import com.example.apicontrolegastos.service.CustomerTypeService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +18,11 @@ import java.util.List;
 public class CustomerTypeController {
     private final CustomerTypeService customerTypeService;
     @PostMapping("/create")
-    public ResponseEntity<CustomerType> create(@RequestBody CustomerTypeDto dto){
+    public ResponseEntity<CustomerType> create(@Valid @RequestBody CustomerTypeDto dto){
         return ResponseEntity.status(HttpStatus.CREATED).body(customerTypeService.create(dto));
     }
     @PutMapping("/update/{id}")
-    public ResponseEntity<CustomerType> put(@PathVariable Long id,@RequestBody CustomerTypeDto dto){
+    public ResponseEntity<CustomerType> put(@PathVariable Long id,@Valid @RequestBody CustomerTypeDto dto){
         return ResponseEntity.status(HttpStatus.OK).body(customerTypeService.update(id,dto));
     }
     @DeleteMapping("/delete/{id}")

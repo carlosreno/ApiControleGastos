@@ -7,14 +7,12 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class CustomerMapper {
-    public static Customer fromDtoToEntity(CustomerType customerType,CustomerDto customerDto){
+    public static Customer fromDtoToEntity(Long id,CustomerType customerType,CustomerDto customerDto){
         return Customer.builder()
-                .customerId(null)
+                .customerId(id)
                 .name(customerDto.name())
                 .email(customerDto.email())
                 .cpf(customerDto.cpf())
-                .tells(customerDto.tells())
-                .addresses(customerDto.addresses())
                 .age(customerDto.age())
                 .customerType(customerType)
                 .build();

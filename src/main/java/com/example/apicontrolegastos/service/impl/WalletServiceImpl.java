@@ -28,7 +28,7 @@ public class WalletServiceImpl implements WalletService {
     public MessageDto delete(Long id) {
         var wallet = verifyIfExisWallet(id);
         walletRepository.deleteById(wallet.getWalletId());
-        return MsgStandard.msgStandardOk("deletado");
+        return MsgStandard.msgStandardOk("deleted");
     }
 
     @Override
@@ -48,15 +48,7 @@ public class WalletServiceImpl implements WalletService {
         return walletRepository.save(wallet);
     }
     private Wallet verifyIfExisWallet(Long id) {
-        var optCustomerType = walletRepository.findById(id);
-        Wallet wallet = new Wallet();
-        optCustomerType.ifPresentOrElse(
-                customerType1 ->
-                        BeanUtils.copyProperties(customerType1, wallet),
-                () -> {
-                    throw new NotFoundException("id not exist");
-                }
-        );
-        return wallet;
+        return walletRepository.findById(id)
+                .orElseThrow(()->new NotFoundException("Wallet with this id not exist"));
     }
 }

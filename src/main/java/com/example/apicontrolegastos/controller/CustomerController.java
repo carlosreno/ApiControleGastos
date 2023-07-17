@@ -21,12 +21,12 @@ public class CustomerController {
     public ResponseEntity<Customer> create(@Valid @RequestBody CustomerDto dto){
         return ResponseEntity.status(HttpStatus.CREATED).body(customerService.create(dto));
     }
-    @PatchMapping("/update/{id}")
-    public ResponseEntity<Customer> put(@Valid @PathVariable Long id,@RequestBody CustomerDto dto){
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Customer> put(@PathVariable Long id,@Valid @RequestBody CustomerDto dto){
         return ResponseEntity.status(HttpStatus.OK).body(customerService.update(id,dto));
     }
     @PatchMapping("/patch/{id}")
-    public ResponseEntity<Customer> path(@PathVariable Long id, @RequestBody CustomerDto dto){
+    public ResponseEntity<Customer> path(@PathVariable Long id,@Valid @RequestBody CustomerDto dto){
         return ResponseEntity.status(HttpStatus.OK).body(customerService.patch(id,dto));
     }
     @DeleteMapping("/delete/{id}")

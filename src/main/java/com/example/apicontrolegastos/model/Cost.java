@@ -28,5 +28,4 @@ public class Cost {
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
-
 }
