@@ -1,6 +1,7 @@
 package com.example.apicontrolegastos.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,5 +22,6 @@ public class Wallet {
     private BigDecimal value;
     @OneToOne
     @JoinColumn(name = "wallet_id")
+    @NotNull
     private Customer customer;
 }

@@ -3,6 +3,7 @@ package com.example.apicontrolegastos.service.impl;
 import com.example.apicontrolegastos.dto.AddressDto;
 import com.example.apicontrolegastos.dto.MessageDto;
 import com.example.apicontrolegastos.exception.NotFoundException;
+import com.example.apicontrolegastos.mapper.AddressMapper;
 import com.example.apicontrolegastos.model.Address;
 import com.example.apicontrolegastos.model.Customer;
 import com.example.apicontrolegastos.repositories.AddressRepository;
@@ -10,7 +11,6 @@ import com.example.apicontrolegastos.service.AddressService;
 import com.example.apicontrolegastos.service.CustomerService;
 import com.example.apicontrolegastos.utils.MsgStandard;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,8 +22,8 @@ public class AddressServiceImpl implements AddressService {
     private final CustomerService customerService;
     @Override
     public Address create(AddressDto addressDto) {
-        Customer customer = customerService.findById(addressDto.customerId());
-        AddressMapper()
+        Customer customer = getCustomer(addressDto.customerId());
+        Address address = AddressMapper.fromDtoToEntity(customer,addressDto,null);
         return addressRepository.save(address);
     }
 
@@ -50,25 +50,30 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public Address update(Address address) {
-        Address addressBd = verifyIfExistAddressWithId(address.getAddressId());
-        BeanUtils.copyProperties(address,addressBd);
-        return addressRepository.save(addressBd);
+    public Address update(Long id,AddressDto addressDto) {
+        Address addressBd = verifyIfExistAddressWithId(id);
+        Address newAddress = AddressMapper
+                .fromDtoToEntity(getCustomer(addressDto.customerId()),addressDto,addressBd.getAddressId());
+        return addressRepository.save(newAddress);
     }
 
     @Override
-    public Address patch(Address address) {
-        Address addressBd = verifyIfExistAddressWithId(address.getAddressId());
+    public Address patch(Long id,AddressDto addressDto) {
+        Address addressBd = verifyIfExistAddressWithId(id);
         Address addressUpdate = Address.builder()
-                .addressId(addressBd.getAddressId())
-                .cep(address.getCep()!=null ? address.getCep() : addressBd.getCep())
-                .rua(address.getRua()!=null ? address.getRua() : addressBd.getRua())
-                .bairro(address.getBairro()!=null ? address.getBairro() : addressBd.getBairro())
-                .numero(address.getNumero()!=null ? address.getNumero() : addressBd.getNumero())
-                .cidade(address.getCidade()!=null ? address.getCidade() : addressBd.getCidade())
-                .uf(address.getUf()!=null ? address.getUf() : addressBd.getUf())
+                .addressId(id)
+                .cep(addressDto.cep()!=null ? addressDto.cep() : addressBd.getCep())
+                .rua(addressDto.rua()!=null ? addressDto.rua() : addressBd.getRua())
+                .bairro(addressDto.bairro()!=null ? addressDto.bairro() : addressBd.getBairro())
+                .numero(addressDto.numero()!=null ? addressDto.numero() : addressBd.getNumero())
+                .cidade(addressDto.cidade()!=null ? addressDto.cidade() : addressBd.getCidade())
+                .uf(addressDto.uf()!=null ? addressDto.uf() : addressBd.getUf())
                 .customer(addressBd.getCustomer())
                 .build();
         return addressRepository.save(addressUpdate);
+    }
+
+    private Customer getCustomer(Long customerId) {
+        return customerService.findById(customerId);
     }
 }

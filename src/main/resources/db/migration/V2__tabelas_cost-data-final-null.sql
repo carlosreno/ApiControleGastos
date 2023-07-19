@@ -1,0 +1,1 @@
+ALTER TABLE cost MODIFY COLUMN final_date DATE NULL;

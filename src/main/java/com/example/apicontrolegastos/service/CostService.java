@@ -14,4 +14,5 @@ public interface CostService {
     Cost findById(Long id);
 
     Cost update(Long id, CostDto costDto);
+    Cost patch(Long id, CostDto costDto);
 }

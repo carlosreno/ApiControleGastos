@@ -14,4 +14,5 @@ public interface WalletService {
     Wallet findById(Long id);
 
     Wallet update(Long id, WalletDto dto);
+    Wallet patch(Long id, WalletDto dto);
 }

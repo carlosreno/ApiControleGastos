@@ -11,6 +11,6 @@ public interface AddressService {
     MessageDto delete(Long id);
     List<Address> findAll();
     Address findById(Long id);
-    Address update(Address address);
-    Address patch(Address address);
+    Address update(Long id, AddressDto addressDto);
+    Address patch(Long id,AddressDto addressDto);
 }
