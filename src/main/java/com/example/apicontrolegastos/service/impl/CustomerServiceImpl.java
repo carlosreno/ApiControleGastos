@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -25,8 +24,8 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer create(CustomerDto customerDto) {
-        verifyIfExistCustomerWithCpf(customerDto.cpf());
-        verifyIfExistCustomerWithEmail(customerDto.email());
+        verifyIfNotExistCustomerWithCpf(customerDto.cpf());
+        verifyIfNotExistCustomerWithEmail(customerDto.email());
         var customerType = getByIdCustomerTypeIfExist(customerDto.customerType());
         Customer customer = CustomerMapper.fromDtoToEntity(null,customerType,customerDto);
         return customerRepository.save(customer);
@@ -51,11 +50,11 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer update(Long id, CustomerDto dto) {
-        var customerDb = verifyIfExistCustomerWithId(id);
-        verifyIfExistCustomerWithEmail(dto.email());
-        verifyIfExistCustomerWithCpf(dto.cpf());
+        Customer customerBd = verifyIfExistCustomerWithId(id);
         CustomerType customerType = getByIdCustomerTypeIfExist(dto.customerType());
         var customerUp = CustomerMapper.fromDtoToEntity(id,customerType,dto);
+        verifyIfNewCpfBelongOtherCustomer(customerUp,dto.cpf(),customerBd.getCpf());
+        verifyIfNewEmailBelongOtherCustomer(customerUp,dto.email(),customerBd.getEmail());
         return customerRepository.save(customerUp);
     }
 
@@ -69,37 +68,43 @@ public class CustomerServiceImpl implements CustomerService {
                 .customerType(dto.customerType()==null ? customerDb.getCustomerType() : getByIdCustomerTypeIfExist(dto.customerType()))
                 .build();
         String cpf = dto.cpf();
-        if (cpf != null && !cpf.equals(customerDb.getCpf())) {
-            if (verifyIfExistCustomerWithCpf(cpf)) {
-                customerPatch.setCpf(cpf);
-            } else {
-                throw new BusinessException("customer with this cpf already exist");
-            }
-        }else {
-            customerPatch.setCpf(customerDb.getCpf());
-        }
+        String cpfBd = customerDb.getCpf();
+        verifyIfNewCpfBelongOtherCustomer(customerPatch, cpf, cpfBd);
 
         String email = dto.email();
-        if (email != null && !email.equals(customerDb.getEmail())) {
-            if (verifyIfExistCustomerWithEmail(email)) {
-                customerPatch.setEmail(email);
-            } else {
-                throw new BusinessException("customer with this email already exist");
-            }
-        }else {
-            customerPatch.setEmail(customerDb.getEmail());
-        }
+        String emailDb = customerDb.getEmail();
+        verifyIfNewEmailBelongOtherCustomer(customerPatch, email, emailDb);
 
         return customerRepository.save(customerPatch);
     }
 
-    private Boolean verifyIfExistCustomerWithCpf(String cpf){
+    private void verifyIfNewEmailBelongOtherCustomer(Customer customerPatch, String email, String emailDb) {
+        if (email != null && !email.equals(emailDb)) {
+            if (Boolean.TRUE.equals(verifyIfNotExistCustomerWithEmail(email))) {
+                customerPatch.setEmail(email);
+            }
+        }else {
+            customerPatch.setEmail(emailDb);
+        }
+    }
+
+    private void verifyIfNewCpfBelongOtherCustomer(Customer customerPatch, String cpf, String cpfBd) {
+        if (cpf != null && !cpf.equals(cpfBd)) {
+            if (Boolean.TRUE.equals(verifyIfNotExistCustomerWithCpf(cpf))) {
+                customerPatch.setCpf(cpf);
+            }
+        }else {
+            customerPatch.setCpf(cpfBd);
+        }
+    }
+
+    private Boolean verifyIfNotExistCustomerWithCpf(String cpf){
         if (customerRepository.findCustomerByCpf(cpf).isEmpty()){
             return true;
         }
         throw new BusinessException("Customer with this cpf already exist");
     }
-    private Boolean verifyIfExistCustomerWithEmail(String email){
+    private Boolean verifyIfNotExistCustomerWithEmail(String email){
         if (customerRepository.findCustomerByEmail(email).isEmpty()){
             return true;
         }

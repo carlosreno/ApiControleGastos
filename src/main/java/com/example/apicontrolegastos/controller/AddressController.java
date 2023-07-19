@@ -20,11 +20,11 @@ public class AddressController {
         return ResponseEntity.status(HttpStatus.CREATED).body(addressService.create(address));
     }
     @PatchMapping("/update/{id}")
-    public ResponseEntity<Address> put(@Valid @PathVariable Long id, @RequestBody Address address){
+    public ResponseEntity<Address> put(@Valid  @RequestBody Address address){
         return ResponseEntity.status(HttpStatus.OK).body(addressService.update(address));
     }
     @PatchMapping("/patch/{id}")
-    public ResponseEntity<Address> path(@PathVariable Long id, @RequestBody Address address){
+    public ResponseEntity<Address> path(@RequestBody Address address){
         return ResponseEntity.status(HttpStatus.OK).body(addressService.patch(address));
     }
     @DeleteMapping("/delete/{id}")

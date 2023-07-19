@@ -1,25 +1,29 @@
 package com.example.apicontrolegastos.service.impl;
 
+import com.example.apicontrolegastos.dto.AddressDto;
 import com.example.apicontrolegastos.dto.MessageDto;
 import com.example.apicontrolegastos.exception.NotFoundException;
 import com.example.apicontrolegastos.model.Address;
+import com.example.apicontrolegastos.model.Customer;
 import com.example.apicontrolegastos.repositories.AddressRepository;
 import com.example.apicontrolegastos.service.AddressService;
+import com.example.apicontrolegastos.service.CustomerService;
 import com.example.apicontrolegastos.utils.MsgStandard;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class AddressServiceImpl implements AddressService {
     private final AddressRepository addressRepository;
+    private final CustomerService customerService;
     @Override
-    public Address create(Address address) {
+    public Address create(AddressDto addressDto) {
+        Customer customer = customerService.findById(addressDto.customerId());
+        AddressMapper()
         return addressRepository.save(address);
     }
 

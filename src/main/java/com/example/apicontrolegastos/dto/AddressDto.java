@@ -1,16 +1,25 @@
 package com.example.apicontrolegastos.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
 @Builder
 public record AddressDto (
+        @NotBlank
          String cep,
-         String logradouro,
+        @NotBlank
+        String uf,
+        @NotBlank
+         String rua,
+        @NotBlank
          String bairro,
-         String localidade,
-         String uf,
-         Long numero,
-         Long customerTypeId
+        @NotBlank
+         String cidade,
+        @NotNull
+        Long numero,
+        @NotNull
+        Long customerId
 ){
 
 }
